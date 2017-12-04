@@ -15,7 +15,7 @@ class JSONEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, o)
 
 
-client = MongoClient('mongodb://backend:27017/dockerdemo')
+client = MongoClient('mongodb://backend:3004/dockerdemo')
 db = client.blogpostDB
 
 app = Flask(__name__)
@@ -40,8 +40,11 @@ def remove_all():
 
     return redirect(url_for('landing_page'))
 
-
-
+@app.route('/update_post',methods=['POST'])
+def update_post():
+    
+    update()
+    return redirect(url_for('landing_page'))
 
 ## Services
 
@@ -67,7 +70,21 @@ def new():
 
     return JSONEncoder().encode(posts[-1])
 
+@app.route('/edit', methods=['PUT'])
+def update():
+    item_doc = {
+        'title': request.form['title'],
+        'post': request.form['post']
+    }
+    _id = ObjectId(request.form['id'])
+    db.blogpostDB.update_one({'_id':_id},{'$set': item_doc})
+    
+@app.route('/delete', methods=['POST'])
+def delete():
+    _id = ObjectId(request.form['id'])
 
+    db.blogpostDB.remove({'_id':_id})
+    return redirect(url_for('landing_page'))
 ### Insert function here ###
 
 

@@ -6,6 +6,12 @@
 	{% block headCss %}
 		<link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/base.css')}}" type="text/css">
 	{% endblock %}
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<script>
+		function deleteItem(){
+			$('#deleteForm').submit()
+		}
+	</script>
 </head>
 	<body class="body">
 		<h2>Welcome to your blog</h2>
@@ -24,12 +30,22 @@
 
 		{% for post in posts %}
 			<div class="blog-border">
-				<div class="title">
-					<div> {{ post.title }} </div>
-				</div>
-				<div class="post">
-					<div> {{ post.post }} </div>
-				</div>
+				<form class="form-border" action="/update_post" method="POST">
+					<div class="title">
+						<input id="input-title" type="text" value='{{ post.title }}' name="title" placeholder="Title"></input>
+					</div>
+					<div class="post">
+						<textarea id="input-post" name="post">{{ post.post }}</textarea>
+					</div>
+					<input type="hidden" name='id' value="{{ post._id }}">
+					<div  class="description wrapper">
+						<input type="button" id="deleteBtn" onclick="deleteItem();" value="DELETE"></input>
+						<input type="submit" id="input-submit" value="UPDATE"></input>
+					</div>
+				</form>
+				<form id='deleteForm' action="/delete" method="POST">
+					<input type="hidden" name='id' value="{{ post._id }}">
+				</form>
 		  	</div>
 		{% endfor %}
 	

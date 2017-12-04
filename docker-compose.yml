@@ -3,7 +3,8 @@ services:
   backend:
     image: mongo:latest
     ports:
-      - "27017:27017"
+      - "3004:3004"
+    command: mongod --port 3004
     networks:
         - docker_cont_network
   swagger:
@@ -11,13 +12,16 @@ services:
     ports:
       - "80:8080"
     environment:
-      - API_URL=http://localhost:8082/swagger.json
+      - SWAGGER_JSON=./swagger.json
+      - API_URL=localhost:8081/swagger.json
     networks:
       - docker_cont_network
+    volumes: 
+      - .:/swagger
   swagger-editor:
     image: swaggerapi/swagger-editor
     ports:
-      - "8081:8080"
+      - "8081:8081"
     networks:
       - docker_cont_network
   frontend:

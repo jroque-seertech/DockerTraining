@@ -13,7 +13,7 @@
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     }
   },
-  "host": "localhost:5000",
+  "host": "http://localhost:8081/",
   "tags": [
     {
       "name": "post",
@@ -26,6 +26,13 @@
   "schemes": [
     "http"
   ],
+  "securityDefinitions":{
+    "Bearer":{
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
   "paths": {
     "/new": {
       "post": {
@@ -53,6 +60,52 @@
               "$ref": "#/definitions/blogpostDB"
             }
           }
+        ],
+        "responses": {
+          "200": {
+            "description": "[{'title':title,'post':post, _id:id}]"
+          }
+        }
+      }
+    },
+    "/post/edit": {
+      "put": {
+        "tags": [
+          "blog post"
+        ],
+        "summary": "update blog post",
+        "description": "",
+        "operationId": "updatePost",
+        "consumes": [
+          "application/json",
+          "application/xml"
+        ],
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "[{'title':title,'post':post, _id:id}]"
+          }
+        }
+      }
+    },
+    "/post/delete": {
+      "delete": {
+        "tags": [
+          "blog post"
+        ],
+        "summary": "delete blog post",
+        "description": "",
+        "operationId": "removePost",
+        "consumes": [
+          "application/json",
+          "application/xml"
+        ],
+        "produces": [
+          "application/xml",
+          "application/json"
         ],
         "responses": {
           "200": {
